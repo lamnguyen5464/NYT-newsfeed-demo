@@ -1,115 +1,73 @@
-/**
- * Sample React Native Home
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+    SafeAreaView,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    FlatList,
+    View,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+import useHome from './useHome';
+import { CategorySection } from '@components';
+import { Colors, DefaultSize, TextSize } from '@utils';
+import { ISectionItem } from './Home.types';
 
 const Home = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+    const { sections, onToggleSection } = useHome();
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>Home.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+    const renderSection = () => (
+        <View style={styles.container_section}>
+            <Text style={styles.text_seciton}>Section</Text>
+            <ScrollView
+                horizontal
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+            >
+                <FlatList
+                    bounces={false}
+                    data={sections || null}
+                    keyExtractor={(item, index) =>
+                        `section ${index}${item.isSelected}${item.content}`
+                    }
+                    renderItem={({ item, index }) => {
+                        const { content = '', isSelected = false } = item;
+                        return (
+                            <View style={styles.section_item}>
+                                <CategorySection
+                                    onPress={() => onToggleSection(index)}
+                                    content={content}
+                                    isSelected={isSelected}
+                                />
+                            </View>
+                        );
+                    }}
+                    numColumns={Math.ceil(sections?.length / 2)}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                />
+            </ScrollView>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+    );
+
+    return <SafeAreaView style={styles.container}>{renderSection()}</SafeAreaView>;
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+    container: {
+        flex: 1,
+    },
+    text_seciton: {
+        marginLeft: DefaultSize.M,
+        fontWeight: 'bold',
+        color: Colors.black_10,
+        fontSize: TextSize.H4,
+    },
+    container_section: {},
+    section_item: {
+        marginLeft: DefaultSize.M,
+        marginTop: DefaultSize.S,
+    },
 });
 
 export default Home;
