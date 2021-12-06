@@ -3,10 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
+    "android": "npx react-native run-android",
+    "ios": "npx react-native run-ios",
+    "pod": "cd ios && pod install && cd ..",
+    "adb": "adb reverse tcp:8081 tcp:8081",
     "test": "jest",
+    "all": "watchman watch-del-all && rm -rf package-lock.json && rm -rf node_modules/ && rm -fr $TMPDIR/metro* && npm install && yarn add @react-native-community/viewpager && cd ios && rm -rf Pods && rm -rf Podfile.lock && pod install && cd .. && yarn start --reset-cache && rm -fr $TMPDIR/metro*",
+    "start": "react-native start --port=8081",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
