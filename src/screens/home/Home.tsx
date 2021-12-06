@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
-    SafeAreaView,
     ScrollView,
     TouchableOpacity,
     StyleSheet,
@@ -15,8 +14,13 @@ import useHome from './useHome';
 import { CategorySection, ItemStory, AnimatedHeader } from '@components';
 import { Colors, DefaultSize, TextSize } from '@utils';
 import { useHeaderHeight } from '@react-navigation/stack';
+import { NavigationScreenProp } from '@react-navigation';
 
-const Home = props => {
+interface IHome {
+    navigation: NavigationScreenProp<any, any>;
+}
+
+const Home = (props: IHome) => {
     const { navigation } = props;
 
     const {
@@ -90,24 +94,24 @@ const Home = props => {
                     placeholder={'Input keywords here'}
                     placeholderTextColor={Colors.black_10}
                     numberOfLines={1}
-                    keyboardType={'default'}
                 />
                 <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={addNewKeyWord}
                     style={[styles.bt_add_keyword, styles.shadow]}
                 >
-                    <Text>add</Text>
+                    <Text>Add</Text>
                 </TouchableOpacity>
             </View>
         );
     };
 
-    const renderListKeywords = () => (
-        <Text style={styles.keywords}>{listKeywords.join(', ')}.</Text>
-    );
+    const renderListKeywords = () =>
+        !!listKeywords.length ? (
+            <Text style={styles.keywords}>Keywords: {listKeywords.join(', ')}.</Text>
+        ) : null;
 
-    const renderHeaderComponents = () => (
+    const HeaderComponents = (
         <>
             {renderSection()}
             {renderKeyWordsInput()}
@@ -115,14 +119,14 @@ const Home = props => {
         </>
     );
 
-    const renderLoading = () => <ActivityIndicator />;
+    const renderLoading = () => <ActivityIndicator style={styles.loading} />;
 
     const renderListStories = () => (
         <View style={styles.container_stories}>
             <FlatList
                 bounces={false}
-                ListHeaderComponent={renderHeaderComponents}
                 ListEmptyComponent={renderLoading}
+                ListHeaderComponent={HeaderComponents}
                 ListFooterComponent={listStories?.length ? renderLoading : null}
                 ref={refListStories}
                 data={listStories.slice(0, numberOfStories)}
@@ -200,7 +204,7 @@ const styles = StyleSheet.create({
         marginLeft: DefaultSize.M,
         fontWeight: 'bold',
         color: Colors.black_17,
-        fontSize: TextSize.H4,
+        fontSize: TextSize.H2,
     },
     container_section: {
         backgroundColor: Colors.black_05,
@@ -213,7 +217,7 @@ const styles = StyleSheet.create({
     container_keywords: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: DefaultSize.M,
+        marginVertical: DefaultSize.M,
         backgroundColor: Colors.white,
         marginHorizontal: DefaultSize.M,
         padding: DefaultSize.M,
@@ -222,15 +226,17 @@ const styles = StyleSheet.create({
     bt_add_keyword: {
         backgroundColor: Colors.black_04,
         padding: DefaultSize.S,
+        alignSelf: 'center',
         borderRadius: DefaultSize.S,
     },
     keywords: {
         fontStyle: 'italic',
-        marginLeft: DefaultSize.M,
-        marginTop: DefaultSize.M,
+        marginLeft: DefaultSize.L,
+        marginBottom: DefaultSize.M,
     },
     container_stories: {
         flex: 1,
+        marginTop: DefaultSize.M,
         backgroundColor: Colors.blue_09,
     },
     container_to_top: {
@@ -240,6 +246,9 @@ const styles = StyleSheet.create({
         padding: DefaultSize.M,
         borderRadius: DefaultSize.M,
         backgroundColor: Colors.blue_08,
+    },
+    loading: {
+        marginVertical: DefaultSize.XL,
     },
 });
 

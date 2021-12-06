@@ -42,7 +42,7 @@ const useHome = () => {
     const refHeader = useRef(null);
 
     const [sections, setSection] = useState<number>(0);
-    const [keywordInput, setKeywordInput] = useState<string>('');
+    const [keywordInput, setKeywordInput] = useState('');
     const [listKeywords, setListKeywords] = useState<string[]>([]);
     const [listStories, setListStories] = useState<IItemStory[]>([]);
     const [numberOfStories, setNumberOfStories] = useState<number>(NUMBER_LOAD_STORIES);
@@ -69,6 +69,7 @@ const useHome = () => {
     const fetchData = (section: string) => {
         setNumberOfStories(NUMBER_LOAD_STORIES);
         setListStories([]);
+        setListKeywords([]);
         ApiHelper.getStoriesOfSection(section).then(res => {
             const { results = [] } = res || {};
             setListStories(results);
