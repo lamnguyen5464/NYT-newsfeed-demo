@@ -2,7 +2,7 @@ import React from 'react';
 import {
     SafeAreaView,
     ScrollView,
-    StatusBar,
+    TouchableOpacity,
     StyleSheet,
     Text,
     FlatList,
@@ -30,13 +30,13 @@ const Home = () => {
                     renderItem={({ item, index }) => {
                         const isSelected = index === sections;
                         return (
-                            <View style={styles.section_item}>
-                                <CategorySection
-                                    onPress={() => onToggleSection(index)}
-                                    content={item}
-                                    isSelected={isSelected}
-                                />
-                            </View>
+                            <TouchableOpacity
+                                onPress={() => onToggleSection(index)}
+                                activeOpacity={0.8}
+                                style={styles.section_item}
+                            >
+                                <CategorySection content={item} isSelected={isSelected} />
+                            </TouchableOpacity>
                         );
                     }}
                     numColumns={Math.ceil(SECTION_OPTIONS?.length / 2)}
@@ -57,10 +57,13 @@ const styles = StyleSheet.create({
     text_seciton: {
         marginLeft: DefaultSize.M,
         fontWeight: 'bold',
-        color: Colors.black_12,
+        color: Colors.black_17,
         fontSize: TextSize.H4,
     },
-    container_section: {},
+    container_section: {
+        backgroundColor: Colors.black_05,
+        paddingVertical: DefaultSize.M,
+    },
     section_item: {
         marginLeft: DefaultSize.M,
         marginTop: DefaultSize.S,

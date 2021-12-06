@@ -5,22 +5,16 @@ import { Colors, DefaultSize } from '@utils';
 interface ICategorySection {
     content: string;
     isSelected?: boolean;
-    onPress?: () => void;
 }
 
 const CategorySection: React.FC<ICategorySection> = ({
     isSelected = false,
     content,
-    onPress,
 }: ICategorySection) => {
     return (
-        <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={onPress}
-            style={[styles.container, isSelected && styles.container_active]}
-        >
+        <View style={[styles.container, isSelected && styles.container_active]}>
             <Text style={[styles.content, isSelected && styles.content_active]}>{content}</Text>
-        </TouchableOpacity>
+        </View>
     );
 };
 
