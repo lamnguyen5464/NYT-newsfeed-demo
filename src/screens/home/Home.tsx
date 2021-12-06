@@ -8,6 +8,7 @@ import {
     FlatList,
     View,
     TextInput,
+    Animated,
 } from 'react-native';
 import useHome from './useHome';
 import { CategorySection, ItemStory } from '@components';
@@ -16,6 +17,8 @@ import { Colors, DefaultSize, TextSize } from '@utils';
 const Home = () => {
     const {
         SECTION_OPTIONS,
+        refListStories,
+        refScrollToTopOffset,
         sections,
         onToggleSection,
         keywordInput,
@@ -23,6 +26,13 @@ const Home = () => {
         addNewKeyWord,
         listKeywords,
         listStories,
+        onScrollToEnd,
+        numberOfStories,
+
+        //scroll to top button
+        scrollToTop,
+        hideScrollToTop,
+        showScrollToTop,
     } = useHome();
 
     const renderSection = () => (
@@ -83,24 +93,64 @@ const Home = () => {
         <Text style={styles.keywords}>{listKeywords.join(', ')}.</Text>
     );
 
+    const renderHeaderComponents = () => (
+        <>
+            {renderSection()}
+            {renderKeyWordsInput()}
+            {renderListKeywords()}
+        </>
+    );
+
     const renderListStories = () => (
         <View style={styles.container_stories}>
             <FlatList
-                data={listStories}
+                ListHeaderComponent={renderHeaderComponents}
+                ref={refListStories}
+                data={listStories.slice(0, numberOfStories)}
                 keyExtractor={(item, index) => `section ${index}${item?.title ?? ''}${item}`}
                 renderItem={({ item, index }) => {
                     return <ItemStory {...item} />;
+                }}
+                onEndReached={onScrollToEnd}
+                onEndReachedThreshold={0.2}
+                onScroll={e => {
+                    if (e.nativeEvent.contentOffset.y > 200) {
+                        showScrollToTop();
+                    } else {
+                        hideScrollToTop();
+                    }
                 }}
             />
         </View>
     );
 
+    const renderScrollToButton = () => (
+        <Animated.View
+            style={[
+                styles.container_to_top,
+                styles.shadow,
+                {
+                    transform: [
+                        {
+                            translateY: refScrollToTopOffset.current.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [50, -100],
+                            }),
+                        },
+                    ],
+                },
+            ]}
+        >
+            <TouchableOpacity onPress={scrollToTop}>
+                <Text>Scroll to top ⬆️</Text>
+            </TouchableOpacity>
+        </Animated.View>
+    );
+
     return (
         <SafeAreaView style={styles.container}>
-            {renderSection()}
-            {renderKeyWordsInput()}
-            {renderListKeywords()}
             {renderListStories()}
+            {renderScrollToButton()}
         </SafeAreaView>
     );
 };
@@ -154,6 +204,14 @@ const styles = StyleSheet.create({
     },
     container_stories: {
         backgroundColor: Colors.blue_09,
+    },
+    container_to_top: {
+        position: 'absolute',
+        alignSelf: 'center',
+        bottom: 0,
+        padding: DefaultSize.M,
+        borderRadius: DefaultSize.M,
+        backgroundColor: Colors.blue_08,
     },
 });
 
