@@ -12,14 +12,21 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import useHome from './useHome';
-import { CategorySection, ItemStory } from '@components';
+import { CategorySection, ItemStory, AnimatedHeader } from '@components';
 import { Colors, DefaultSize, TextSize } from '@utils';
+import { useHeaderHeight } from '@react-navigation/stack';
 
-const Home = () => {
+const Home = props => {
+    const { navigation } = props;
+
     const {
         SECTION_OPTIONS,
+        TOP_OFFSET,
+        //ref
+        refHeader,
         refListStories,
         refScrollToTopOffset,
+
         sections,
         onToggleSection,
         keywordInput,
@@ -36,8 +43,16 @@ const Home = () => {
         showScrollToTop,
     } = useHome();
 
+    console.log(useHeaderHeight());
+
     const renderSection = () => (
-        <View style={[styles.container_section, styles.shadow]}>
+        <View
+            style={[
+                styles.container_section,
+                styles.shadow,
+                { paddingTop: useHeaderHeight() || 92 },
+            ]}
+        >
             <Text style={styles.text_seciton}>Section</Text>
             <ScrollView
                 horizontal
@@ -107,9 +122,10 @@ const Home = () => {
     const renderListStories = () => (
         <View style={styles.container_stories}>
             <FlatList
+                bounces={false}
                 ListHeaderComponent={renderHeaderComponents}
                 ListEmptyComponent={renderLoading}
-                ListFooterComponent={renderLoading}
+                ListFooterComponent={listStories?.length ? renderLoading : null}
                 ref={refListStories}
                 data={listStories.slice(0, numberOfStories)}
                 keyExtractor={(item, index) => `section ${index}${item?.title ?? ''}${item}`}
@@ -119,11 +135,14 @@ const Home = () => {
                 onEndReached={onScrollToEnd}
                 onEndReachedThreshold={0.2}
                 onScroll={e => {
-                    if (e.nativeEvent.contentOffset.y > 200) {
+                    const offsetY = e.nativeEvent.contentOffset.y;
+                    if (offsetY > TOP_OFFSET) {
                         showScrollToTop();
                     } else {
                         hideScrollToTop();
                     }
+
+                    refHeader.current?.setOpacity(Math.min(1, offsetY / TOP_OFFSET));
                 }}
             />
         </View>
@@ -152,11 +171,16 @@ const Home = () => {
         </Animated.View>
     );
 
+    const renderTabBar = () => (
+        <AnimatedHeader ref={refHeader} navigation={navigation} title="NYT News Feed" />
+    );
+
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+            {renderTabBar()}
             {renderListStories()}
             {renderScrollToButton()}
-        </SafeAreaView>
+        </View>
     );
 };
 

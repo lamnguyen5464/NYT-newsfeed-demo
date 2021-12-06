@@ -39,6 +39,7 @@ const NUMBER_LOAD_STORIES = 10;
 const useHome = () => {
     const refListStories = useRef<FlatList>(null);
     const refScrollToTopOffset = useRef<Animated.Value>(new Animated.Value(0));
+    const refHeader = useRef(null);
 
     const [sections, setSection] = useState<number>(0);
     const [keywordInput, setKeywordInput] = useState<string>('');
@@ -98,8 +99,13 @@ const useHome = () => {
 
     return {
         SECTION_OPTIONS: SECTION_OPTIONS.map(item => StringUtils.upperWord(item)),
+        TOP_OFFSET: 300,
+
+        //ref
+        refHeader,
         refListStories,
         refScrollToTopOffset,
+
         sections,
         onToggleSection,
         keywordInput,
