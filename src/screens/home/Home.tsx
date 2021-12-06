@@ -9,6 +9,7 @@ import {
     View,
     TextInput,
     Animated,
+    ActivityIndicator,
 } from 'react-native';
 import useHome from './useHome';
 import { CategorySection, ItemStory } from '@components';
@@ -101,10 +102,14 @@ const Home = () => {
         </>
     );
 
+    const renderLoading = () => <ActivityIndicator />;
+
     const renderListStories = () => (
         <View style={styles.container_stories}>
             <FlatList
                 ListHeaderComponent={renderHeaderComponents}
+                ListEmptyComponent={renderLoading}
+                ListFooterComponent={renderLoading}
                 ref={refListStories}
                 data={listStories.slice(0, numberOfStories)}
                 keyExtractor={(item, index) => `section ${index}${item?.title ?? ''}${item}`}
@@ -203,6 +208,7 @@ const styles = StyleSheet.create({
         marginTop: DefaultSize.M,
     },
     container_stories: {
+        flex: 1,
         backgroundColor: Colors.blue_09,
     },
     container_to_top: {

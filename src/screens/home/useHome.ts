@@ -73,7 +73,9 @@ const useHome = () => {
     };
 
     const onScrollToEnd = () => {
-        setNumberOfStories(Math.min(numberOfStories + 5, listStories.length));
+        setTimeout(() => {
+            setNumberOfStories(Math.min(numberOfStories + 5, listStories.length));
+        }, 1000);
     };
 
     const scrollToTop = () => {
