@@ -36,6 +36,8 @@ const useHome = () => {
     useEffect(() => {}, []);
 
     const [sections, setSection] = useState<number>(0);
+    const [keywordInput, setKeywordInput] = useState<string>('');
+    const [listKeywords, setListKeywords] = useState<string[]>([]);
 
     const onToggleSection = useCallback(
         (_index: number) => {
@@ -43,6 +45,13 @@ const useHome = () => {
         },
         [sections]
     );
+
+    const addNewKeyWord = () => {
+        if (!!keywordInput) {
+            setListKeywords([keywordInput, ...listKeywords]);
+            setKeywordInput('');
+        }
+    };
 
     const fetchData = () => {
         ApiHelper.getAllStories().then(res => {});
@@ -52,6 +61,10 @@ const useHome = () => {
         SECTION_OPTIONS: SECTION_OPTIONS.map(item => StringUtils.upperWord(item)),
         sections,
         onToggleSection,
+        keywordInput,
+        setKeywordInput,
+        addNewKeyWord,
+        listKeywords,
     };
 };
 
