@@ -4,6 +4,7 @@ import { ISectionItem } from './Home.types';
 import { StringUtils } from '@utils';
 import { IItemStory } from '@component/IItemStory';
 import { Animated, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SECTION_OPTIONS = [
     'arts',
@@ -36,6 +37,8 @@ const SECTION_OPTIONS = [
 
 const NUMBER_LOAD_STORIES = 10;
 
+const KEY_STORAGE_SECTION = 'KEY_STORAGE_SECTION';
+
 const useHome = () => {
     const refListStories = useRef<FlatList>(null);
     const refScrollToTopOffset = useRef<Animated.Value>(new Animated.Value(0));
@@ -48,12 +51,23 @@ const useHome = () => {
     const [numberOfStories, setNumberOfStories] = useState<number>(NUMBER_LOAD_STORIES);
 
     useEffect(() => {
-        onToggleSection(0);
+        getFromStorage().then(res => {
+            onToggleSection(parseInt(res || '0'));
+        });
     }, []);
+
+    const getFromStorage = () => {
+        return AsyncStorage.getItem(KEY_STORAGE_SECTION);
+    };
+
+    const setToStorage = (sectionIndex: number) => {
+        AsyncStorage.setItem(KEY_STORAGE_SECTION, sectionIndex?.toString());
+    };
 
     const onToggleSection = useCallback(
         (_index: number) => {
             setSection(_index);
+            setToStorage(_index);
             fetchData(SECTION_OPTIONS[_index]);
         },
         [sections]
@@ -64,6 +78,10 @@ const useHome = () => {
             setListKeywords([keywordInput, ...listKeywords]);
             setKeywordInput('');
         }
+    };
+
+    const clearListKeyWord = () => {
+        setListKeywords([]);
     };
 
     const fetchData = (section: string) => {
@@ -100,6 +118,20 @@ const useHome = () => {
         }).start();
     };
 
+    const getListStories = () => {
+        return listStories.slice(0, numberOfStories).filter(item => {
+            for (const keyword of listKeywords) {
+                if (!StringUtils.isMatching(item?.title, keyword)) return false;
+                console.log(item?.title, keyword);
+            }
+            return true;
+        });
+    };
+
+    const isReachedEnd = () => {
+        return numberOfStories >= getListStories()?.length;
+    };
+
     return {
         SECTION_OPTIONS: SECTION_OPTIONS.map(item => StringUtils.upperWord(item)),
         TOP_OFFSET: 300,
@@ -114,6 +146,7 @@ const useHome = () => {
         keywordInput,
         setKeywordInput,
         addNewKeyWord,
+        clearListKeyWord,
         listKeywords,
         listStories,
         onScrollToEnd,
@@ -123,6 +156,9 @@ const useHome = () => {
         scrollToTop,
         hideScrollToTop,
         showScrollToTop,
+
+        getListStories,
+        isReachedEnd,
     };
 };
 

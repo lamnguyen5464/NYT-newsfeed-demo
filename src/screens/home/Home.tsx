@@ -36,6 +36,7 @@ const Home = (props: IHome) => {
         keywordInput,
         setKeywordInput,
         addNewKeyWord,
+        clearListKeyWord,
         listKeywords,
         listStories,
         onScrollToEnd,
@@ -45,6 +46,9 @@ const Home = (props: IHome) => {
         scrollToTop,
         hideScrollToTop,
         showScrollToTop,
+
+        getListStories,
+        isReachedEnd,
     } = useHome();
 
     const renderSection = () => (
@@ -108,7 +112,12 @@ const Home = (props: IHome) => {
 
     const renderListKeywords = () =>
         !!listKeywords.length ? (
-            <Text style={styles.keywords}>Keywords: {listKeywords.join(', ')}.</Text>
+            <View>
+                <TouchableOpacity onPress={clearListKeyWord} style={styles.clear_bt}>
+                    <Text>Clear</Text>
+                </TouchableOpacity>
+                <Text style={styles.keywords}>Keywords: {listKeywords.join(', ')}.</Text>
+            </View>
         ) : null;
 
     const HeaderComponents = (
@@ -121,34 +130,37 @@ const Home = (props: IHome) => {
 
     const renderLoading = () => <ActivityIndicator style={styles.loading} />;
 
-    const renderListStories = () => (
-        <View style={styles.container_stories}>
-            <FlatList
-                bounces={false}
-                ListEmptyComponent={renderLoading}
-                ListHeaderComponent={HeaderComponents}
-                ListFooterComponent={listStories?.length ? renderLoading : null}
-                ref={refListStories}
-                data={listStories.slice(0, numberOfStories)}
-                keyExtractor={(item, index) => `section ${index}${item?.title ?? ''}${item}`}
-                renderItem={({ item, index }) => {
-                    return <ItemStory {...item} />;
-                }}
-                onEndReached={onScrollToEnd}
-                onEndReachedThreshold={0.2}
-                onScroll={e => {
-                    const offsetY = e.nativeEvent.contentOffset.y;
-                    if (offsetY > TOP_OFFSET) {
-                        showScrollToTop();
-                    } else {
-                        hideScrollToTop();
-                    }
+    const renderListStories = () => {
+        const data = getListStories();
+        return (
+            <View style={styles.container_stories}>
+                <FlatList
+                    bounces={false}
+                    ListEmptyComponent={renderLoading}
+                    ListHeaderComponent={HeaderComponents}
+                    ListFooterComponent={!isReachedEnd() && data?.length ? renderLoading : null}
+                    ref={refListStories}
+                    data={data}
+                    keyExtractor={(item, index) => `section ${index}${item?.title ?? ''}${item}`}
+                    renderItem={({ item }) => {
+                        return <ItemStory {...item} />;
+                    }}
+                    onEndReached={onScrollToEnd}
+                    onEndReachedThreshold={0.2}
+                    onScroll={e => {
+                        const offsetY = e?.nativeEvent?.contentOffset?.y || 0;
+                        if (offsetY > TOP_OFFSET) {
+                            showScrollToTop();
+                        } else {
+                            hideScrollToTop();
+                        }
 
-                    refHeader.current?.setOpacity(Math.min(1, offsetY / TOP_OFFSET));
-                }}
-            />
-        </View>
-    );
+                        refHeader.current?.setOpacity(Math.min(1, offsetY / TOP_OFFSET));
+                    }}
+                />
+            </View>
+        );
+    };
 
     const renderScrollToButton = () => (
         <Animated.View
@@ -249,6 +261,10 @@ const styles = StyleSheet.create({
     },
     loading: {
         marginVertical: DefaultSize.XL,
+    },
+    clear_bt: {
+        alignSelf: 'flex-end',
+        marginRight: DefaultSize.M,
     },
 });
 
