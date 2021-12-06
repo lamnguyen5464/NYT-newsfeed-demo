@@ -1,5 +1,5 @@
 /**
- * Sample React Native App
+ * Sample React Native Home
  * https://github.com/facebook/react-native
  *
  * Generated with the TypeScript template
@@ -55,7 +55,7 @@ const Section: React.FC<{
   );
 };
 
-const App = () => {
+const Home = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -74,7 +74,7 @@ const App = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
+            Edit <Text style={styles.highlight}>Home.tsx</Text> to change this
             screen and then come back to see your edits.
           </Section>
           <Section title="See Your Changes">
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Home;
