@@ -16,19 +16,11 @@ const SECTION_OPTIONS = [
 const useHome = () => {
     useEffect(() => {}, []);
 
-    const [sections, setSection] = useState<ISectionItem[]>(
-        SECTION_OPTIONS.map(item => <ISectionItem>{ content: item, isSelected: false })
-    );
+    const [sections, setSection] = useState<number>(0);
 
     const onToggleSection = useCallback(
         (_index: number) => {
-            setSection(
-                sections.map((item, index) =>
-                    index === _index
-                        ? <ISectionItem>{ content: item.content, isSelected: !item.isSelected }
-                        : item
-                )
-            );
+            setSection(_index);
         },
         [sections]
     );
@@ -37,7 +29,7 @@ const useHome = () => {
         ApiHelper.getAllStories().then(res => {});
     };
 
-    return { sections, onToggleSection };
+    return { SECTION_OPTIONS, sections, onToggleSection };
 };
 
 export default useHome;

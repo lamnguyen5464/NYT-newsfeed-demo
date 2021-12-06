@@ -11,10 +11,9 @@ import {
 import useHome from './useHome';
 import { CategorySection } from '@components';
 import { Colors, DefaultSize, TextSize } from '@utils';
-import { ISectionItem } from './Home.types';
 
 const Home = () => {
-    const { sections, onToggleSection } = useHome();
+    const { SECTION_OPTIONS, sections, onToggleSection } = useHome();
 
     const renderSection = () => (
         <View style={styles.container_section}>
@@ -26,23 +25,21 @@ const Home = () => {
             >
                 <FlatList
                     bounces={false}
-                    data={sections || null}
-                    keyExtractor={(item, index) =>
-                        `section ${index}${item.isSelected}${item.content}`
-                    }
+                    data={SECTION_OPTIONS || null}
+                    keyExtractor={(item, index) => `section ${index}${item}${item}`}
                     renderItem={({ item, index }) => {
-                        const { content = '', isSelected = false } = item;
+                        const isSelected = index === sections;
                         return (
                             <View style={styles.section_item}>
                                 <CategorySection
                                     onPress={() => onToggleSection(index)}
-                                    content={content}
+                                    content={item}
                                     isSelected={isSelected}
                                 />
                             </View>
                         );
                     }}
-                    numColumns={Math.ceil(sections?.length / 2)}
+                    numColumns={Math.ceil(SECTION_OPTIONS?.length / 2)}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                 />
@@ -60,7 +57,7 @@ const styles = StyleSheet.create({
     text_seciton: {
         marginLeft: DefaultSize.M,
         fontWeight: 'bold',
-        color: Colors.black_10,
+        color: Colors.black_12,
         fontSize: TextSize.H4,
     },
     container_section: {},
