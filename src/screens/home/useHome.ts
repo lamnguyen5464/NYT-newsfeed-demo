@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { ApiHelper } from '@helpers';
 import { ISectionItem } from './Home.types';
 import { StringUtils } from '@utils';
+import { IItemStory } from '@component/IItemStory';
 
 const SECTION_OPTIONS = [
     'arts',
@@ -38,6 +39,11 @@ const useHome = () => {
     const [sections, setSection] = useState<number>(0);
     const [keywordInput, setKeywordInput] = useState<string>('');
     const [listKeywords, setListKeywords] = useState<string[]>([]);
+    const [listStories, setListStories] = useState<IItemStory[]>([]);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const onToggleSection = useCallback(
         (_index: number) => {
@@ -54,7 +60,10 @@ const useHome = () => {
     };
 
     const fetchData = () => {
-        ApiHelper.getAllStories().then(res => {});
+        ApiHelper.getAllStories().then(res => {
+            const { results = [] } = res || {};
+            setListStories(results);
+        });
     };
 
     return {
@@ -65,6 +74,7 @@ const useHome = () => {
         setKeywordInput,
         addNewKeyWord,
         listKeywords,
+        listStories,
     };
 };
 

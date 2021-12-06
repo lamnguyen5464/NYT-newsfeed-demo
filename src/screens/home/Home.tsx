@@ -10,7 +10,7 @@ import {
     TextInput,
 } from 'react-native';
 import useHome from './useHome';
-import { CategorySection } from '@components';
+import { CategorySection, ItemStory } from '@components';
 import { Colors, DefaultSize, TextSize } from '@utils';
 
 const Home = () => {
@@ -22,6 +22,7 @@ const Home = () => {
         setKeywordInput,
         addNewKeyWord,
         listKeywords,
+        listStories,
     } = useHome();
 
     const renderSection = () => (
@@ -82,11 +83,24 @@ const Home = () => {
         <Text style={styles.keywords}>{listKeywords.join(', ')}.</Text>
     );
 
+    const renderListStories = () => (
+        <View style={styles.container_stories}>
+            <FlatList
+                data={listStories}
+                keyExtractor={(item, index) => `section ${index}${item?.title ?? ''}${item}`}
+                renderItem={({ item, index }) => {
+                    return <ItemStory {...item} />;
+                }}
+            />
+        </View>
+    );
+
     return (
         <SafeAreaView style={styles.container}>
             {renderSection()}
             {renderKeyWordsInput()}
             {renderListKeywords()}
+            {renderListStories()}
         </SafeAreaView>
     );
 };
@@ -137,6 +151,9 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         marginLeft: DefaultSize.M,
         marginTop: DefaultSize.M,
+    },
+    container_stories: {
+        backgroundColor: Colors.blue_09,
     },
 });
 
