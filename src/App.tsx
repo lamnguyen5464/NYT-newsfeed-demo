@@ -1,8 +1,8 @@
 import React from 'react';
-import Home from './screens/home/Home';
+import { Home } from '@screens';
 
 const App = () => {
-  return <Home />;
+    return <Home />;
 };
 
 export default App;
