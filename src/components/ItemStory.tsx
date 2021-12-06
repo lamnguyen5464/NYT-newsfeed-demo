@@ -1,6 +1,7 @@
 import { Colors, DefaultSize, TextSize, TimeUtils } from '@utils';
 import React, { memo } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text, Linking } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface IItemStory {
     url?: string;
@@ -18,18 +19,27 @@ interface IMultimedia {
 const ItemStory = (props: IItemStory) => {
     const { title = '', url = '', byline = '', published_date = '', multimedia } = props;
     return (
-        <View style={[styles.container, styles.shadow]}>
-            <Image source={{ uri: multimedia?.[0]?.url ?? '' }} style={styles.img} />
+        <TouchableOpacity
+            onPress={() => {
+                Linking.openURL(url);
+            }}
+            activeOpacity={0.8}
+            style={[styles.container, styles.shadow]}
+        >
+            <Image source={{ uri: multimedia?.[0]?.url ?? DEFAULT_IMG }} style={styles.img} />
             <View style={styles.content}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{title || 'Title'}</Text>
                 <Text style={styles.subtitle}>{byline}</Text>
                 <Text style={styles.subtitle}>
                     Published: {TimeUtils.formatDelta(published_date)}
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
+
+const DEFAULT_IMG =
+    'https://cdn3.vectorstock.com/i/1000x1000/35/52/placeholder-rgb-color-icon-vector-32173552.jpg';
 
 const styles = StyleSheet.create({
     container: {

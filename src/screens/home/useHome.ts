@@ -48,12 +48,13 @@ const useHome = () => {
     const [numberOfStories, setNumberOfStories] = useState<number>(NUMBER_LOAD_STORIES);
 
     useEffect(() => {
-        fetchData();
+        onToggleSection(0);
     }, []);
 
     const onToggleSection = useCallback(
         (_index: number) => {
             setSection(_index);
+            fetchData(SECTION_OPTIONS[_index]);
         },
         [sections]
     );
@@ -65,9 +66,10 @@ const useHome = () => {
         }
     };
 
-    const fetchData = () => {
+    const fetchData = (section: string) => {
         setNumberOfStories(NUMBER_LOAD_STORIES);
-        ApiHelper.getAllStories().then(res => {
+        setListStories([]);
+        ApiHelper.getStoriesOfSection(section).then(res => {
             const { results = [] } = res || {};
             setListStories(results);
         });

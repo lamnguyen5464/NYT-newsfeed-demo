@@ -43,8 +43,6 @@ const Home = props => {
         showScrollToTop,
     } = useHome();
 
-    console.log(useHeaderHeight());
-
     const renderSection = () => (
         <View
             style={[
