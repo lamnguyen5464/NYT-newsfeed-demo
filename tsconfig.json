@@ -14,7 +14,7 @@
         "skipLibCheck": true,
         "strictNullChecks": true,
         "typeRoots": ["node_modules/@types"],
-        "baseUrl": "./src",
+        "baseUrl": ".",
         "paths": {
             "@screens": ["./src/screens"],
             "@utils": ["./src/utils"],

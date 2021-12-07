@@ -4,7 +4,9 @@
 
 import 'react-native';
 
-import { ApiHelper, Models } from '../src/helpers';
+// import { ApiHelper, Models } from '../src/helpers';
+import ApiHelper from '../src/helpers/api/ApiHelper';
+import * as Models from '../src/helpers/models';
 import { StringUtils } from '../src/utils';
 
 // StringUtils
@@ -46,9 +48,13 @@ describe('Test StringUtils.isMatching', () => {
 });
 
 // API test
-// it('Test API', () => {
-//     ApiHelper.getStoriesOfSection('arts').then(res => {
-//         // const { results } = res as Models.ISectionStory;
-//         // expect(results?.length).not.toBe(0);
-//     });
-// });
+describe('Test API', () => {
+    const TEST_CASE = ['arts', 'sports', 'movies', 'BoOks'];
+    TEST_CASE.forEach((item, index) => {
+        test(`Test case ${index}: ${item}`, () => {
+            return ApiHelper.getStoriesOfSection(item).then(res => {
+                expect(res).toBeTruthy();
+            });
+        });
+    });
+});
