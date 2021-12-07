@@ -2,12 +2,16 @@ import React, { useLayoutEffect, useRef, forwardRef, useImperativeHandle } from 
 import { StyleSheet, Animated, Image, Text, View } from 'react-native';
 import { DefaultSize, Colors, TextSize } from '@utils';
 import { useHeaderHeight, StackNavigationProp } from '@react-navigation/stack';
-interface IAnimatedHeader {
+export interface IAnimatedHeader {
     navigation: StackNavigationProp<any, any>;
     title: string;
 }
 
-const AnimatedHeader = forwardRef((props: IAnimatedHeader, ref) => {
+export interface IRefAnimatedHeader {
+    setOpacity: (value: number) => void;
+}
+
+const AnimatedHeader = forwardRef((props: IAnimatedHeader, ref: React.Ref<IRefAnimatedHeader>) => {
     const { navigation, title = '' } = props;
     const headerHeight = useRef(useHeaderHeight() || 98).current;
     const opacityAnimated = useRef(new Animated.Value(0)).current;

@@ -5,8 +5,9 @@ import { StringUtils } from '@utils';
 import { Animated, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
-import { OfflineBanner } from '@components';
 import { Models } from '@helpers';
+import { IRefAnimatedHeader } from '../../components/AnimatedHeader';
+import { IRefOfflineBanner } from '../../components/OfflineBanner';
 
 const SECTION_OPTIONS = [
     'arts',
@@ -44,8 +45,8 @@ const KEY_STORAGE_SECTION = 'KEY_STORAGE_SECTION';
 const useHome = () => {
     const refListStories = useRef<FlatList>(null);
     const refScrollToTopOffset = useRef<Animated.Value>(new Animated.Value(0));
-    const refHeader = useRef(null);
-    const refOfflineBanner = useRef(null);
+    const refHeader = useRef<IRefAnimatedHeader>(null);
+    const refOfflineBanner = useRef<IRefOfflineBanner>(null);
 
     const [sections, setSection] = useState<number>(0);
     const [keywordInput, setKeywordInput] = useState('');
