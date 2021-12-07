@@ -237,10 +237,11 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
         marginHorizontal: DefaultSize.M,
         padding: DefaultSize.M,
+        paddingVertical: DefaultSize.XS,
         borderRadius: DefaultSize.S,
     },
     bt_add_keyword: {
-        backgroundColor: Colors.black_04,
+        backgroundColor: Colors.white,
         padding: DefaultSize.S,
         alignSelf: 'center',
         borderRadius: DefaultSize.S,
