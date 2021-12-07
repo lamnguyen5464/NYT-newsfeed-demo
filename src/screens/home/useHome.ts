@@ -5,6 +5,8 @@ import { StringUtils } from '@utils';
 import { IItemStory } from '@component/IItemStory';
 import { Animated, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo from '@react-native-community/netinfo';
+import { OfflineBanner } from '@components';
 
 const SECTION_OPTIONS = [
     'arts',
@@ -43,6 +45,7 @@ const useHome = () => {
     const refListStories = useRef<FlatList>(null);
     const refScrollToTopOffset = useRef<Animated.Value>(new Animated.Value(0));
     const refHeader = useRef(null);
+    const refOfflineBanner = useRef(null);
 
     const [sections, setSection] = useState<number>(0);
     const [keywordInput, setKeywordInput] = useState('');
@@ -54,6 +57,19 @@ const useHome = () => {
         getFromStorage().then(res => {
             onToggleSection(parseInt(res || '0'));
         });
+    }, []);
+
+    useEffect(() => {
+        const removeNetworkListener = NetInfo.addEventListener(state => {
+            if (state.isConnected) {
+                refOfflineBanner.current?.hide();
+            } else {
+                refOfflineBanner.current?.show();
+            }
+        });
+        return () => {
+            removeNetworkListener?.();
+        };
     }, []);
 
     const getFromStorage = () => {
@@ -139,6 +155,7 @@ const useHome = () => {
         //ref
         refHeader,
         refListStories,
+        refOfflineBanner,
         refScrollToTopOffset,
 
         sections,

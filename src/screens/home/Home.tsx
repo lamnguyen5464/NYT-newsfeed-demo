@@ -11,7 +11,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import useHome from './useHome';
-import { CategorySection, ItemStory, AnimatedHeader } from '@components';
+import { CategorySection, ItemStory, AnimatedHeader, OfflineBanner } from '@components';
 import { Colors, DefaultSize, TextSize } from '@utils';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { NavigationScreenProp } from '@react-navigation';
@@ -29,6 +29,7 @@ const Home = (props: IHome) => {
         //ref
         refHeader,
         refListStories,
+        refOfflineBanner,
         refScrollToTopOffset,
 
         sections,
@@ -189,11 +190,14 @@ const Home = (props: IHome) => {
         <AnimatedHeader ref={refHeader} navigation={navigation} title="NYT News Feed" />
     );
 
+    const renderOfflineBanner = () => <OfflineBanner ref={refOfflineBanner} />;
+
     return (
         <View style={styles.container}>
             {renderTabBar()}
             {renderListStories()}
             {renderScrollToButton()}
+            {renderOfflineBanner()}
         </View>
     );
 };
