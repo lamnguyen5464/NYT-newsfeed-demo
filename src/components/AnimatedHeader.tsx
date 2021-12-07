@@ -1,11 +1,9 @@
 import React, { useLayoutEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { StyleSheet, Animated, Image, Text, View } from 'react-native';
 import { DefaultSize, Colors, TextSize } from '@utils';
-import { useHeaderHeight } from '@react-navigation/stack';
-import { NavigationScreenProp } from '@react-navigation';
-
+import { useHeaderHeight, StackNavigationProp } from '@react-navigation/stack';
 interface IAnimatedHeader {
-    navigation: NavigationScreenProp<any, any>;
+    navigation: StackNavigationProp<any, any>;
     title: string;
 }
 

@@ -13,10 +13,10 @@ import {
 import useHome from './useHome';
 import { CategorySection, ItemStory, AnimatedHeader, OfflineBanner } from '@components';
 import { Colors, DefaultSize, TextSize } from '@utils';
-import { useHeaderHeight, StackScreenProps } from '@react-navigation/stack';
+import { useHeaderHeight, StackNavigationProp } from '@react-navigation/stack';
 
 interface IHome {
-    navigation: StackScreenProps<any, any>;
+    navigation: StackNavigationProp<any, any>;
 }
 
 const Home = (props: IHome) => {
