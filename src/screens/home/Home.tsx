@@ -11,12 +11,12 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import useHome from './useHome';
-import { CategorySection, ItemStory, AnimatedHeader, OfflineBanner } from '@components';
-import { Colors, DefaultSize, TextSize } from '@utils';
+import { CategorySection, ItemStory, AnimatedHeader, OfflineBanner } from '../../components';
+import { Colors, DefaultSize, TextSize } from '../../utils';
 import { useHeaderHeight, StackNavigationProp } from '@react-navigation/stack';
 
 interface IHome {
-    navigation: StackNavigationProp<any, any>;
+    navigation?: StackNavigationProp<any, any>;
 }
 
 const Home = (props: IHome) => {

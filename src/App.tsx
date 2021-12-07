@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppNavigation } from '@helpers';
+import { AppNavigation } from './helpers';
 
 const App = () => {
     return <AppNavigation />;

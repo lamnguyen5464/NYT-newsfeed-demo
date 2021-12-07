@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
-import { Colors, DefaultSize, DeviceUtils } from '@utils';
+import { Colors, DefaultSize, DeviceUtils } from '../utils';
 
 export interface IRefOfflineBanner {
     show: () => void;

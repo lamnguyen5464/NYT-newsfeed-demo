@@ -1,8 +1,8 @@
-import { Colors, DefaultSize, TextSize, TimeUtils } from '@utils';
+import { Colors, DefaultSize, TextSize, TimeUtils } from '../utils';
 import React, { memo } from 'react';
 import { View, StyleSheet, Image, Text, Linking } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Models } from '@helpers';
+import { Models } from '../helpers';
 
 const ItemStory = (props: Models.IItemStory) => {
     const { title = '', url = '', byline = '', published_date = '', multimedia } = props;

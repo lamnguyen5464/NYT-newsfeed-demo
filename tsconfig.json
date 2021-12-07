@@ -14,12 +14,12 @@
         "skipLibCheck": true,
         "strictNullChecks": true,
         "typeRoots": ["node_modules/@types"],
-        "baseUrl": ".",
+        "baseUrl": "src",
         "paths": {
-            "@screens": ["./src/screens"],
-            "@utils": ["./src/utils"],
-            "@helpers": ["./src/helpers"],
-            "@components": ["./src/components"]
+            "@screens/*": ["screens/$1"],
+            "@utils/*": ["utils/$1"],
+            "@helpers/*": ["helpers/$1"],
+            "@components/*": ["components/$1"]
         }
     },
     "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.ts", "modules"]

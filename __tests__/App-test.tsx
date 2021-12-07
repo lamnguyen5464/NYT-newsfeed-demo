@@ -3,14 +3,15 @@
  */
 
 import 'react-native';
+import React from 'react';
 
-// import { ApiHelper, Models } from '../src/helpers';
-import ApiHelper from '../src/helpers/api/ApiHelper';
-import * as Models from '../src/helpers/models';
+import { ApiHelper, Models } from '../src/helpers';
 import { StringUtils } from '../src/utils';
+//
+jest.mock('@react-native-async-storage/async-storage', () => null);
+jest.mock('@react-native-community/netinfo', () => null);
 
 // StringUtils
-
 describe('Test StringUtils.upperWord', () => {
     const TEST_CASE = [
         { input: 'arts', output: 'Arts' },

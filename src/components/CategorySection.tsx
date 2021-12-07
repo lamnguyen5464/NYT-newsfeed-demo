@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Colors, DefaultSize } from '@utils';
+import { Colors, DefaultSize } from '../utils';
 
 export interface ICategorySection {
     content: string;

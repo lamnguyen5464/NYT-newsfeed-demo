@@ -1,11 +1,10 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { ApiHelper } from '@helpers';
+import { ApiHelper, Models } from '../../helpers';
 import { ISectionItem } from './Home.types';
-import { StringUtils } from '@utils';
+import { StringUtils } from '../../utils';
 import { Animated, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
-import { Models } from '@helpers';
 import { IRefAnimatedHeader } from '../../components/AnimatedHeader';
 import { IRefOfflineBanner } from '../../components/OfflineBanner';
 
