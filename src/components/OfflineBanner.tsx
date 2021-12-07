@@ -2,6 +2,11 @@ import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import { Colors, DefaultSize, DeviceUtils } from '@utils';
 
+interface IRefOfflineBanner {
+    show: () => void;
+    hide: () => void;
+}
+
 const OfflineBanner = forwardRef((_, ref) => {
     const offsetAnimated = useRef(new Animated.Value(0)).current;
 

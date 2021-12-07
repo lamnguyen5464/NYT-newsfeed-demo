@@ -2,11 +2,11 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { ApiHelper } from '@helpers';
 import { ISectionItem } from './Home.types';
 import { StringUtils } from '@utils';
-import { IItemStory } from '@component/IItemStory';
 import { Animated, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import { OfflineBanner } from '@components';
+import { Models } from '@helpers';
 
 const SECTION_OPTIONS = [
     'arts',
@@ -50,7 +50,7 @@ const useHome = () => {
     const [sections, setSection] = useState<number>(0);
     const [keywordInput, setKeywordInput] = useState('');
     const [listKeywords, setListKeywords] = useState<string[]>([]);
-    const [listStories, setListStories] = useState<IItemStory[]>([]);
+    const [listStories, setListStories] = useState<Models.IItemStory[]>([]);
     const [numberOfStories, setNumberOfStories] = useState<number>(NUMBER_LOAD_STORIES);
 
     useEffect(() => {
@@ -105,7 +105,7 @@ const useHome = () => {
         setListStories([]);
         setListKeywords([]);
         ApiHelper.getStoriesOfSection(section).then(res => {
-            const { results = [] } = res || {};
+            const { results = [] } = <Models.ISectionStory>res || {};
             setListStories(results);
         });
     };
