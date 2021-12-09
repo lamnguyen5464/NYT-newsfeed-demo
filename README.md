@@ -1,4 +1,4 @@
-# ZipHR-demo
+# NYT-newsfeed-demo
 
 
 ###  [Video demo](https://www.youtube.com/watch?v=Mb8VU_A1fPY)
